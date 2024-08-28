@@ -3,12 +3,14 @@
 import { Form, Button } from "react-bootstrap";
 import ListaTareas from "./ListaTareas";
 import { useState, useEffect } from "react";
-
+import { useForm } from "react-hook-form";
 
 const FormularioTarea = () => {
   const tareasLocalstorage = JSON.parse(localStorage.getItem('tareasKey')) || [];
   const [listaTareas, setListaTareas] = useState(tareasLocalstorage)
-  const [tarea, setTarea] = useState('')
+  const [tarea, setTarea] = useState('');
+  const {register, handleSubmit, formState:{errors}} = useForm();
+
 
   //ciclo de vida del componente
   useEffect(()=>{
@@ -21,7 +23,7 @@ const FormularioTarea = () => {
 //   setTarea(e.target.value)
 // }
 
-const handleSubmit = (e)=>{
+const handleSubmit2 = (e)=>{
   e.preventDefault();
   //guardar la tarea en listaTareas
   // listaTareas.push(tarea)
