@@ -22,6 +22,13 @@ const handleSubmit = (e)=>{
   setTarea('');
 }
 
+const borrarTarea = (nombreTarea)=>{
+  //listaTareas.splice
+  const tareasFiltradas = listaTareas.filter((item)=> item !== nombreTarea );
+  //actualizar el state
+  setListaTareas(tareasFiltradas)
+}
+
   return (
     <section>
       <Form onSubmit={handleSubmit}>
@@ -32,7 +39,7 @@ const handleSubmit = (e)=>{
           </Button>
         </Form.Group>
       </Form>
-      <ListaTareas listaTareas={listaTareas}></ListaTareas>
+      <ListaTareas listaTareas={listaTareas} borrarTarea={borrarTarea}></ListaTareas>
     </section>
   );
 };
