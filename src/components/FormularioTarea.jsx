@@ -9,7 +9,7 @@ const FormularioTarea = () => {
   const tareasLocalstorage = JSON.parse(localStorage.getItem('tareasKey')) || [];
   const [listaTareas, setListaTareas] = useState(tareasLocalstorage)
   const [tarea, setTarea] = useState('');
-  const {register, handleSubmit, formState:{errors}} = useForm();
+  const {register, handleSubmit, formState:{errors}, reset} = useForm();
 
 
   //ciclo de vida del componente
@@ -23,13 +23,13 @@ const FormularioTarea = () => {
 //   setTarea(e.target.value)
 // }
 
-const handleSubmit2 = (e)=>{
-  e.preventDefault();
+const onSubmit = (data)=>{
+  console.log(data)
   //guardar la tarea en listaTareas
   // listaTareas.push(tarea)
   // ... operador spread
-  setListaTareas([...listaTareas, tarea])
-  setTarea('');
+   setListaTareas([...listaTareas, data.tarea])
+   reset();
 }
 
 const borrarTarea = (nombreTarea)=>{
@@ -41,13 +41,24 @@ const borrarTarea = (nombreTarea)=>{
 
   return (
     <section>
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit(onSubmit)}>
         <Form.Group className="mb-3 d-flex" >
-          <Form.Control type="text" placeholder="agrega una tarea" onChange={(e)=> setTarea(e.target.value)} value={tarea}/>
+          <Form.Control type="text" placeholder="agrega una tarea" {...register("tarea",{
+            required:"La tarea es un dato obligatorio",
+            minLength:{
+              value:3,
+              message: "La tarea debe contener como minimo 3 caracteres"
+            },
+            maxLength:{
+              value:15,
+              message: "La tarea debe contener como maximo 15 caracteres"
+            }
+          })} />
           <Button variant="primary" type="submit">
             Enviar
           </Button>
         </Form.Group>
+        <Form.Text className="text-danger">{errors.tarea?.message}</Form.Text>
       </Form>
       <ListaTareas listaTareas={listaTareas} borrarTarea={borrarTarea}></ListaTareas>
     </section>
